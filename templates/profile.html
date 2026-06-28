@@ -1,0 +1,121 @@
+{{ define "content" }}
+<!-- Название профиля -->
+<div class="profileNameW">
+    <span class="flR" style="color: #939699; font-weight: normal; margin-top: 4px;">Online</span>
+    <h2>{{ .Profile.FullName }} <span style="color: #939699; font-size: 11px; font-weight: normal;">(this is you)</span></h2>
+</div>
+
+<div class="columnLayout leftNarrow" id="profileLayout">
+    <!-- Левая подколонка: Аватар и Блок друзей -->
+    <div id="left">
+        {{ if .Profile.Avatar }}
+            <img src="{{ .Profile.Avatar }}" style="width: 200px; border-radius: 2px; display: block; max-height: 250px; object-fit: cover;">
+        {{ else }}
+            <span class="ava avaPlaceholder inProfile"></span>
+        {{ end }}
+        
+        <div class="profileBelowAva">
+            {{ if ne .CurrentUser.ID .Profile.ID }}
+                {{ if .IsFollowing }}
+                    <form action="/{{ .Profile.Username }}/unfollow" method="POST">
+                        <button type="submit" class="button">Unfollow</button>
+                    </form>
+                {{ else }}
+                    <form action="/{{ .Profile.Username }}/follow" method="POST">
+                        <button type="submit" class="button">Follow</button>
+                    </form>
+                {{ end }}
+            {{ else }}
+                <a href="/edit" class="button">Edit profile</a>
+            {{ end }}
+        </div>
+
+        <!-- Блок друзей (Скриншот 2) -->
+        <div class="profileBlock" style="margin-top: 15px;">
+            <div class="blockHeader">
+                <span class="addHeader">1 friend</span>
+                <a href="#">Friends</a>
+            </div>
+            <div class="padded" style="display: flex; gap: 10px; justify-content: flex-start; padding: 10px;">
+                <div style="text-align: center; width: 60px; overflow: hidden;">
+                    <img src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=crop&q=80&w=50&h=50" style="width: 50px; height: 50px; border-radius: 2px; object-fit: cover;">
+                    <div style="font-size: 10px; margin-top: 4px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+                        <a href="#">John Smith</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Правая подколонка: Информационные блоки (Скриншот 2) -->
+    <div id="right">
+        <div class="profileStatus">
+            {{ if .Profile.About }}
+                {{ .Profile.About }}
+            {{ else }}
+                <span class="grayText">edit status</span>
+            {{ end }}
+        </div>
+
+        <div class="infoBlock" style="margin-top: 10px;">
+            <div class="infoBlockHeader">
+                <span class="flR editLink"><a href="/edit">edit</a></span>
+                Contact info
+            </div>
+            <div class="infoBlockContent">
+                <span class="grayText">No information.</span>
+            </div>
+        </div>
+
+        <div class="infoBlock" style="margin-top: 15px;">
+            <div class="infoBlockHeader">
+                <span class="flR editLink"><a href="/edit">edit</a></span>
+                Views
+            </div>
+            <div class="infoBlockContent">
+                <span class="grayText">No information.</span>
+            </div>
+        </div>
+
+        <div class="infoBlock" style="margin-top: 15px;">
+            <div class="infoBlockHeader">
+                <span class="flR editLink"><a href="/edit">edit</a></span>
+                Personal info
+            </div>
+            <div class="infoBlockContent">
+                <span class="grayText">No information.</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Блок стены во всю ширину -->
+<div class="singleColumn">
+    <div class="profileBlock" style="margin-top: 15px;">
+        <div class="blockHeader">
+            <span class="addHeader">Wall</span>
+        </div>
+        
+        <!-- Форма публикации -->
+        <div class="wallPostForm">
+            <form action="/post" method="POST">
+                <input type="hidden" name="wall_owner" value="{{ .Profile.Username }}">
+                <textarea name="content" rows="2" placeholder="Write something on the wall..."></textarea>
+                <div class="bottomBar">
+                    <div class="left"><button type="submit">Post</button></div>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Список постов стены -->
+        <div class="narrowWall" id="postList">
+            {{ if not .Posts }}
+                <div class="emptyState" style="border: none; background: none;">No one has written anything here yet.</div>
+            {{ end }}
+            {{ range .Posts }}
+                {{ template "post" . }}
+            {{ end }}
+        </div>
+    </div>
+</div>
+{{ end }}

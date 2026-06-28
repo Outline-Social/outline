@@ -1,0 +1,66 @@
+{{ define "post" }}
+<div class="post">
+    <!-- Аватарка автора -->
+    <div class="postAvaWrap">
+        {{ if .Author.Avatar }}
+            <a href="/{{ .Author.Username }}"><img src="{{ .Author.Avatar }}" class="ava sizeA avaImage"></a>
+        {{ else }}
+            <span class="ava avaPlaceholder sizeA"></span>
+        {{ end }}
+    </div>
+    <!-- Тело поста -->
+    <div class="postContentWrap">
+        <a href="/{{ .Author.Username }}" class="authorName">{{ .Author.FullName }}</a>
+        {{ if ne .WallOwnerID .AuthorID }}
+            <span class="postOwnerArrowIcon"></span><a href="/{{ .WallOwner.Username }}" class="authorName">{{ .WallOwner.FullName }}</a>
+        {{ end }}
+        <div class="postContent">{{ .Content }}</div>
+        
+        <!-- Нижняя панель с кнопкой Like (оригинальные стили .contentActions) -->
+        <div class="postInfo">
+            <span class="postActions contentActions">
+                <span class="likeWrap">
+                    <a class="action like"><span class="icon">&nbsp;</span><span class="counter">0</span></a>
+                </span>
+            </span>
+            <a href="#" class="postLink">{{ .CreatedAt.Format "02.01.2006 в 15:04" }}</a>
+        </div>
+    </div>
+</div>
+
+<!-- Вложенные комментарии (Скриншот 3) -->
+<div class="commentsPreviewWrap">
+    <div class="commentsPreview" id="comments_{{ .ID }}">
+        {{ range .Comments }}
+        <div class="post comment">
+            <div class="commentAvaWrap">
+                {{ if .Author.Avatar }}
+                    <a href="/{{ .Author.Username }}"><img src="{{ .Author.Avatar }}" class="ava sizeA avaImage" style="width: 32px; height: 32px;"></a>
+                {{ else }}
+                    <span class="ava avaPlaceholder" style="width: 32px; height: 32px;"></span>
+                {{ end }}
+            </div>
+            <div class="commentContentWrap">
+                <a href="/{{ .Author.Username }}" class="authorName">{{ .Author.FullName }}</a>
+                <div class="postContent">{{ .Content }}</div>
+                <div class="postInfo">
+                    <a href="#" class="postLink">{{ .CreatedAt.Format "02.01.2006 в 15:04" }}</a>
+                </div>
+            </div>
+        </div>
+        {{ end }}
+    </div>
+
+    <!-- Форма отправки комментария -->
+    <div class="wallPostForm">
+        <form action="/comment" method="POST">
+            <input type="hidden" name="post_id" value="{{ .ID }}">
+            <input type="hidden" name="wall_owner" value="{{ .WallOwner.Username }}">
+            <textarea name="content" rows="1" placeholder="Write a comment..." class="keepBorder" style="width: 100%; border: 1px solid #cbcc99; border-radius: 2px; padding: 4px; box-sizing: border-box;" required autocomplete="off"></textarea>
+            <div class="bottomBar">
+                <div class="left"><button type="submit" class="button">Send</button></div>
+            </div>
+        </form>
+    </div>
+</div>
+{{ end }}

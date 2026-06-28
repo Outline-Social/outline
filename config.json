@@ -1,0 +1,7 @@
+{
+  "port": ":8080",
+  "db_path": "network.db",
+  "session_secret": "outline-super-secret-key-2026-custom-hash",
+  "upload_dir": "static/uploads",
+  "allow_signups": true
+}

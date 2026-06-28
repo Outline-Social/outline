@@ -1,0 +1,34 @@
+{{ define "content" }}
+<!-- Оригинальные вкладки ленты -->
+<div class="tabbar">
+    <a href="/feed" class="selected">Friends</a>
+    <a href="#">Groups</a>
+    <a href="#">Comments</a>
+</div>
+
+<!-- Форма отправки поста из ленты -->
+<div class="wallPostForm" style="border-top: none;">
+    <form action="/post" method="POST">
+        <input type="hidden" name="wall_owner" value="{{ .CurrentUser.Username }}">
+        <textarea name="content" rows="2" placeholder="What's new?"></textarea>
+        <div class="bottomBar">
+            <div class="left"><button type="submit">Post</button></div>
+        </div>
+    </form>
+</div>
+
+<!-- Заголовок ленты -->
+<div class="summaryWrap">
+    <div class="summary">Showing latest news</div>
+</div>
+
+<!-- Лента новостей -->
+<div class="singleColumn">
+    {{ if not .Posts }}
+        <div class="emptyState" style="border: none; background: none;">There are no news from your friends.</div>
+    {{ end }}
+    {{ range .Posts }}
+        {{ template "post" . }}
+    {{ end }}
+</div>
+{{ end }}

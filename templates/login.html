@@ -1,0 +1,81 @@
+{{ define "content" }}
+<div class="navbar"><span class="navItem">Welcome!</span></div>
+<div class="singleColumn">
+	<h2>Try Outline</h2>
+	<p></p>
+	<p>Welcome to <b>Outline</b>, a fast, lightweight, and clean social network software.</p>
+            <p>Connect with your friends, share your thoughts on your wall, and enjoy a nostalgic, streamlined, distraction-free social experience. Feel free to register an account and start exploring!</p>
+	<p>If you like what you see, join us</a> or <a href="https://github.com/Outline-Social" target="_blank">run your own server</a>!</p>
+	<p></p>
+	<p align="center"><a href="#">About this server »</a></p>
+	
+	{{ if .AllowSignups }}
+	<form action="/account/register" method="post" id="registerForm">
+		<h2>Sign up</h2>
+		{{ if .Error }}
+			<div class="settingsMessage">
+				<b>{{ .Error }}</b>
+			</div>
+		{{ end }}
+		<table class="form">
+			<tbody>
+				<tr id="formRow_first_name">
+					<td class="label">
+						<label for="first_name">First name</label>:
+					</td>
+					<td>
+						<input type="text" id="first_name" name="fullname" class="control" maxlength="100" required="">
+					</td>
+				</tr>
+				<tr id="formRow_last_name">
+					<td class="label">
+						<label for="last_name">Last name</label>:
+					</td>
+					<td>
+						<input type="text" id="last_name" name="lastname" class="control" maxlength="100">
+					</td>
+				</tr>
+				<tr id="formRow_email">
+					<td class="label">
+						<label for="email">E-mail</label>:
+					</td>
+					<td>
+						<input type="email" id="email" name="email" class="control" required="">
+					</td>
+				</tr>
+				<tr id="formRow_username">
+					<td class="label">
+						<label for="username">Username (id)</label>:
+					</td>
+					<td>
+						<input type="text" id="username" name="username" class="control" maxlength="64" required="" pattern="^[a-zA-Z0-9_]+$" autocomplete="off">
+					</td>
+				</tr>
+				<tr id="formRow_password">
+					<td class="label">
+						<label for="password">Password</label>:
+					</td>
+					<td>
+						<input type="password" id="password" name="password" value="" class="control" minlength="4" required="" autocomplete="new-password">
+					</td>
+				</tr>
+				<tr id="formRow_password2">
+					<td class="label">
+						<label for="password2">Confirm password</label>:
+					</td>
+					<td>
+						<input type="password" id="password2" name="confirm_password" value="" class="control" minlength="4" required="" autocomplete="new-password">
+					</td>
+				</tr>
+				<tr class="footer">
+					<td class="label"></td>
+					<td>
+						<button type="submit">Sign up</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+	{{ end }}
+</div>
+{{ end }}

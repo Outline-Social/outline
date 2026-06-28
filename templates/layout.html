@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<title>{{ .Title }}</title>
+	<link rel="stylesheet" type="text/css" href="/static/desktop.css"/>
+	<script>
+		var userConfig={"timeZone":"UTC","locale":"en","langPluralRulesName":"english"};
+		var mobile=false;
+	</script>
+</head>
+<body class="{{ if .WideLayout }}widePage{{ else }}narrowPage{{ end }} hasJS">
+	<div class="wrap" id="wrap">
+		<!-- Шапка сайта -->
+		<div class="headerWrap">
+			<div class="headerBG"><div class="shadow"></div></div>
+			<div class="header">
+				<div class="logo">
+					<a href="/feed">
+						<img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z'/%3E%3C/svg%3E" height="28" width="27" border="0" alt="Smithereen" style="vertical-align: middle; margin-right: 8px;">Try Smithereen
+					</a>
+				</div>
+				<!-- Поле поиска -->
+				<div id="headerLeftNavWrap">
+					<a href="" id="headerBack" class="nav back ellipsize" style="display: none"></a>
+					{{ if .CurrentUser.ID }}
+					<div id="qsearchWrap">
+						<input type="text" id="qsearchField" placeholder="Search" autocomplete="off" autocapitalize="off"/>
+					</div>
+					{{ end }}
+				</div>
+				<div id="headerNav">
+					{{ if .CurrentUser.ID }}
+						<a href="#" class="nav">invite</a>
+						<a href="/logout" class="nav">log out</a>
+					{{ end }}
+				</div>
+			</div>
+		</div>
+
+		<!-- Область контента -->
+		<div class="contentWrap{{ if .NoLeftMenu }} noLeftMenu{{ end }}">
+			<!-- Левое меню (Сайдбар) -->
+			<div class="leftMenu">
+				{{ if .CurrentUser.ID }}
+					<div class="menuItem"><span class="flR editLink"><a href="/edit">edit</a></span><a href="/{{ .CurrentUser.Username }}">My Profile</a></div>
+					<div class="menuItem"><a href="/feed">My Friends</a></div>
+					<div class="menuItem"><a href="#">My Photos</a></div>
+					<div class="menuItem"><a href="#">My Messages</a></div>
+					<div class="menuItem"><a href="#">My Groups</a></div>
+					<div class="menuItem"><a href="#">My Events</a></div>
+					<div class="menuItem"><a href="/feed">My News</a></div>
+					<div class="menuItem"><a href="#">My Feedback</a></div>
+					<div class="menuItem"><a href="#">My Bookmarks</a></div>
+					<div class="menuItem"><a href="/edit">My Settings</a></div>
+				{{ else }}
+					<!-- Форма логина в сайдбаре при входе -->
+					<form action="/account/login" method="post" style="padding-top: 5px;">
+						Email or username:<br>
+						<input type="text" name="username" style="width: 100%; box-sizing: border-box; margin: 4px 0;"><br>
+						Password:<br>
+						<input type="password" name="password" style="width: 100%; box-sizing: border-box; margin: 4px 0;"><br>
+						<input type="submit" value="Log in" style="margin-top: 5px; width: 100%;">
+						<center class="marginBefore" style="margin-top: 15px;"><a href="#" class="grayText">Forgot your password?</a></center>
+					</form>
+				{{ end }}
+			</div>
+			
+			<div class="pageContentW">
+				<div class="pageContent" id="pageContent">
+					{{ template "content" . }}
+				</div>
+				
+				<!-- Подвал (Футтер) -->
+				<div class="pageFooter">
+					<div class="footerNav">
+						<a href="#">About server</a>
+						<a href="#">Privacy</a>
+						<a href="#">Language: English</a>
+						<a href="#" target="_blank">Developers</a>
+						<a href="#" target="_blank">Source code</a>
+					</div>
+					<a href="#" target="_blank">Smithereen</a> 1.0.2
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+{{ define "content" }}
+<div class="navbar"><span class="navItem">Settings</span></div>
+<div class="singleColumn gray">
+    <h2>Profile settings</h2>
+    <div class="editForm" style="display: flex; gap: 20px; align-items: flex-start; margin-top: 15px;">
+        <div class="left" style="width: 150px; text-align: center;">
+            {{ if .CurrentUser.Avatar }}
+                <img src="{{ .CurrentUser.Avatar }}" style="width: 100%; max-height: 200px; object-fit: cover; border-radius: 2px; border: 1px solid #cbcc99;">
+            {{ else }}
+                <span class="ava avaPlaceholder inProfile"></span>
+            {{ end }}
+            <form action="/edit/avatar" method="POST" enctype="multipart/form-data" style="margin-top: 10px;">
+                <input type="file" name="avatar" accept="image/*" id="avatarField" style="display: none;" onchange="this.form.submit()">
+                <label for="avatarField" class="button" style="width: 100%; cursor: pointer; text-align: center;">Upload picture</label>
+            </form>
+        </div>
+        <form action="/edit" method="POST" class="right" style="flex-grow: 1;">
+            <table class="form" style="width: 100%; margin: 0;">
+                <tbody>
+                <tr>
+                    <td class="label"><label for="fullname">Full name</label>:</td>
+                    <td><input type="text" id="fullname" name="fullname" value="{{ .CurrentUser.FullName }}" class="control" required style="width: 100%;"></td>
+                </tr>
+                <tr>
+                    <td class="label"><label for="about">About me</label>:</td>
+                    <td><textarea id="about" name="about" class="control" style="width: 100%;">{{ .CurrentUser.About }}</textarea></td>
+                </tr>
+                <tr class="footer">
+                    <td class="label"></td>
+                    <td><button type="submit">Save</button></td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+{{ end }}
